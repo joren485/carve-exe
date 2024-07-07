@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "carve-exe"
+authors = []
+readme = "README.md"
+description = ""
+version = "1.0.0"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+loguru = "^0.7.2"
+pefile = "^2023.2.7"
+typer = "^0.12.3"
+pyelftools = "^0.31"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.0"
+
+[tool.poetry.scripts]
+carve-exe = 'carve_exe.app:app'
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D100",
+    "D104",
+    "D203",
+    "D212",
+]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
