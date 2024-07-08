@@ -2,8 +2,13 @@
 name = "carve-exe"
 authors = []
 readme = "README.md"
-description = ""
-version = "1.0.0"
+description = "Carve Exe is a simple best effort tool to carve PE and ELF files from arbitrary, binary files (e.g. memory dumps and executables)."
+version = "1.0.1"
+homepage = "https://github.com/joren485/carve-exe/"
+repository = "https://github.com/joren485/carve-exe/"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/joren485/carve-exe/issues/"
 
 [tool.poetry.dependencies]
 python = "^3.12"
