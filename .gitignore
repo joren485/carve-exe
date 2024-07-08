@@ -2,6 +2,7 @@ data/
 .ruff_cache/
 .idea/
 __pycache__/
+dist/
 *.py[cod]
 *$py.class
 poetry.lock
