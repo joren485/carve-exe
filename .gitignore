@@ -6,3 +6,4 @@ dist/
 *.py[cod]
 *$py.class
 poetry.lock
+*.bin

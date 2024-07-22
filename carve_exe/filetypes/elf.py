@@ -30,6 +30,8 @@ class FiletypeELF(Filetype):
                 continue
             size = max(size, section["sh_offset"] + section["sh_size"])
 
+        for segment in elf.iter_segments():
+            size = max(size, segment["p_offset"] + segment["p_filesz"])
+
         size = max(size, elf["e_shoff"] + elf["e_shentsize"] * elf["e_shnum"])
         return max(size, elf["e_phoff"] + elf["e_phentsize"] * elf["e_phnum"])
-

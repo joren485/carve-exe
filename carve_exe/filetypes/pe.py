@@ -26,4 +26,3 @@ class FiletypePE(Filetype):
             return None
 
         return max(section.PointerToRawData + section.SizeOfRawData for section in pe.sections)
-

@@ -11,11 +11,9 @@ def carver(path_input: Path, path_output: Path) -> None:
 
     with path_input.open("rb") as h_input:
         while b := h_input.read(1):
-
             next_read_offset = h_input.tell()
 
             for filetype in FILETYPES:
-
                 if b[0] != filetype.MAGIC[0]:
                     continue
 
@@ -29,7 +27,6 @@ def carver(path_input: Path, path_output: Path) -> None:
                     # handle
                     executable_size = filetype.get_size(h_input)
                     if executable_size is not None:
-
                         logger.info(f"@0x{executable_offset:x}: {filetype.NAME} file of {executable_size} bytes.")
 
                         h_input.seek(executable_offset)
@@ -49,5 +46,3 @@ def carver(path_input: Path, path_output: Path) -> None:
 
                 b = b[:1]
                 h_input.seek(next_read_offset)
-
-
