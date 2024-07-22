@@ -22,27 +22,27 @@ def carver(path_input: Path, path_output: Path) -> None:
                     executable_offset = h_input.tell() - len(b)
                     h_input.seek(executable_offset)
 
-                    logger.info(f"@0x{executable_offset:x}: {filetype.NAME} candidate.")
+                    logger.info(f"@0x{executable_offset:x}: {filetype.NAME} candidate")
 
                     # handle
                     executable_size = filetype.get_size(h_input)
                     if executable_size is not None:
-                        logger.info(f"@0x{executable_offset:x}: {filetype.NAME} file of {executable_size} bytes.")
+                        logger.info(f"@0x{executable_offset:x}: {filetype.NAME} file of {executable_size} bytes")
 
                         h_input.seek(executable_offset)
                         executable_data = h_input.read(executable_size)
 
-                        if len(executable_data) == executable_size:
+                        if len(executable_data) < executable_size:
                             path_out = path_output / f"{path_input.stem}_{filetype.NAME}_0x{executable_offset:x}.bin"
                             with path_out.open("wb") as h_out:
                                 h_out.write(executable_data)
-                            logger.info(f"Wrote {filetype.NAME} to {path_out}.")
+                            logger.info(f"Wrote {filetype.NAME} of {len(executable_data)} bytes to {path_out}")
 
                         else:
-                            logger.warning(f"@0x{executable_offset:x} Failed to read {executable_size} bytes.")
+                            logger.warning(f"@0x{executable_offset:x} Failed to read {executable_size} bytes")
 
                     else:
-                        logger.warning(f"@0x{executable_offset:x} Failed to load {filetype.NAME} candidate.")
+                        logger.warning(f"@0x{executable_offset:x} Failed to load {filetype.NAME} candidate")
 
                 b = b[:1]
                 h_input.seek(next_read_offset)
