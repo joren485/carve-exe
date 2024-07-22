@@ -21,5 +21,8 @@ jobs:
           pip install poetry
           poetry install
 
-      - name: "Run ruff"
+      - name: "Run ruff formatting"
+        run: "poetry run ruff format --check ."
+
+      - name: "Run ruff linting"
         run: "poetry run ruff check ."

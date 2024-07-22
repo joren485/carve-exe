@@ -13,7 +13,8 @@ def carve(
     path_input: Annotated[
         Path,
         typer.Option(
-            "-i", "--input",
+            "-i",
+            "--input",
             help="Input file to carve or directory of files to carve.",
             dir_okay=True,
             file_okay=True,
@@ -21,10 +22,11 @@ def carve(
             readable=True,
         ),
     ],
-
     path_output: Annotated[
-        Path, typer.Option(
-            "-o", "--output",
+        Path,
+        typer.Option(
+            "-o",
+            "--output",
             help="Output directory to write found executables to.",
             dir_okay=True,
             file_okay=False,
