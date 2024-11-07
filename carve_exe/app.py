@@ -1,7 +1,9 @@
+import sys
 from pathlib import Path
 from typing import Annotated
 
 import typer
+from loguru import logger
 
 from carve_exe.carver import carver
 
@@ -33,8 +35,13 @@ def carve(
             writable=True,
         ),
     ],
+    verbose: Annotated[bool, typer.Option("-v", "--verbose", help="Verbose output")] = False,
 ) -> None:
     """Carve PE files from binary blob."""
+    if not verbose:
+        logger.remove()
+        logger.add(sys.stderr, level="DEBUG")
+
     if path_input.is_file():
         carver(path_input, path_output)
 

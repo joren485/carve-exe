@@ -13,6 +13,8 @@ class FiletypeELF(Filetype):
     NAME = "ELF"
     MAGIC = b"\x7fELF"
 
+    MAX_NUMBER_SECTIONS_SEGMENTS = 100
+
     @classmethod
     def get_size(cls, h_input: BinaryIO) -> int | None:
         """Get ELF size."""
@@ -21,17 +23,23 @@ class FiletypeELF(Filetype):
 
         try:
             elf = ELFFile(h_data)
-        except ELFError:
+
+            if (
+                elf.num_sections() < cls.MAX_NUMBER_SECTIONS_SEGMENTS
+                or elf.num_segments() < cls.MAX_NUMBER_SECTIONS_SEGMENTS
+            ):
+                return None
+
+            size = 0
+            for section in elf.iter_sections():
+                if section["sh_type"] == "SHT_NOBITS":
+                    continue
+                size = max(size, section["sh_offset"] + section["sh_size"])
+
+            for segment in elf.iter_segments():
+                size = max(size, segment["p_offset"] + segment["p_filesz"])
+
+            size = max(size, elf["e_shoff"] + elf["e_shentsize"] * elf["e_shnum"])
+            return max(size, elf["e_phoff"] + elf["e_phentsize"] * elf["e_phnum"])
+        except (ELFError, OverflowError, TypeError):
             return None
-
-        size = 0
-        for section in elf.iter_sections():
-            if section["sh_type"] == "SHT_NOBITS":
-                continue
-            size = max(size, section["sh_offset"] + section["sh_size"])
-
-        for segment in elf.iter_segments():
-            size = max(size, segment["p_offset"] + segment["p_filesz"])
-
-        size = max(size, elf["e_shoff"] + elf["e_shentsize"] * elf["e_shnum"])
-        return max(size, elf["e_phoff"] + elf["e_phentsize"] * elf["e_phnum"])
